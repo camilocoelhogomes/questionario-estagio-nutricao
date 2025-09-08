@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Questionário de Nutrição</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="brand">NutriCare</div>
+    <div class="progress" id="progress">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" id="step-1">
+      <h2>Parte 1 — Dados e Cálculos Básicos</h2>
+
+      <div class="grid two">
+        <div class="field">
+          <label for="nome">Nome do paciente</label>
+          <input id="nome" type="text" placeholder="Digite o nome" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="idade">Idade (anos)</label>
+          <input id="idade" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
+        </div>
+        <div class="field">
+          <label>Sexo</label>
+          <div class="segmented">
+            <input type="radio" id="sexo-m" name="sexo" value="M" checked>
+            <label for="sexo-m">Masculino</label>
+            <input type="radio" id="sexo-f" name="sexo" value="F">
+            <label for="sexo-f">Feminino</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="joelho">Altura do joelho (cm)</label>
+          <input id="joelho" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+      </div>
+
+      <h3>Peso estimado (usar circunferências)</h3>
+      <div class="grid four">
+        <div class="field">
+          <label for="cp">CP</label>
+          <input id="cp" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+        <div class="field">
+          <label for="aj">AJ</label>
+          <input id="aj" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+        <div class="field">
+          <label for="cb">CB</label>
+          <input id="cb" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+        <div class="field">
+          <label for="pcse">PCSE</label>
+          <input id="pcse" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Peso para TMB</label>
+          <div class="segmented">
+            <input type="radio" id="peso-estimado" name="pesoFonte" value="estimado" checked>
+            <label for="peso-estimado">Estimado</label>
+            <input type="radio" id="peso-balanca" name="pesoFonte" value="balanca">
+            <label for="peso-balanca">Balança</label>
+          </div>
+        </div>
+        <div class="field" id="peso-balanca-field" hidden>
+          <label for="pesoMedido">Peso na balança (kg)</label>
+          <input id="pesoMedido" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result"><span>Peso estimado:</span><strong id="pesoEstimado">0,00</strong><span
+            class="suf">kg</span></div>
+        <div class="result"><span>Altura estimada:</span><strong id="alturaEstimadacm">0,0</strong><span
+            class="suf">cm</span> <em>(<span id="alturaEstimadam">0,00</span> m)</em></div>
+        <div class="result"><span>TMB:</span><strong id="tmb">0</strong><span class="suf">kcal/dia</span></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn next" data-next="2">Próximo</button>
+      </div>
+    </section>
+
+    <section class="card" id="step-2" hidden>
+      <h2>Parte 2 — Fatores e Kcal Final</h2>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Fator de atividade (FA)</label>
+          <div class="chips">
+            <input class="inj" type="checkbox" id="fa-12" value="1.2"><label for="fa-12">Acamado 1,2</label>
+            <input class="inj" type="checkbox" id="fa-125" value="1.25"><label for="fa-125">Deambulando pouco
+              1,25</label>
+            <input class="inj" type="checkbox" id="fa-13" value="1.3"><label for="fa-13">Deambulando 1,3</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Temperatura (FT)</label>
+          <div class="chips">
+            <input class="inj" type="checkbox" id="ft-11" value="1.1"><label for="ft-11">38° 1,1</label>
+            <input class="inj" type="checkbox" id="ft-12" value="1.2"><label for="ft-12">39° 1,2</label>
+            <input class="inj" type="checkbox" id="ft-13" value="1.3"><label for="ft-13">40° 1,3</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Condição/Procedimento</label>
+          <div class="chips">
+            <input class="inj" type="checkbox" id="fc-125" value="1.25"><label for="fc-125">Câncer 1,25</label>
+            <input class="inj" type="checkbox" id="fc-11" value="1.1"><label for="fc-11">Cirurgia pequena 1,1</label>
+            <input class="inj" type="checkbox" id="fc-12" value="1.2"><label for="fc-12">Cirurgia grande 1,2</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Infecção</label>
+          <div class="chips">
+            <input class="inj" type="checkbox" id="inf-12" value="1.2"><label for="inf-12">Leve 1,2</label>
+            <input class="inj" type="checkbox" id="inf-14" value="1.4"><label for="inf-14">Moderada 1,4</label>
+            <input class="inj" type="checkbox" id="inf-16" value="1.6"><label for="inf-16">Grande 1,6</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Queimado</label>
+          <div class="chips">
+            <input class="inj" type="checkbox" id="qmd-15" value="1.5"><label for="qmd-15">40% do corpo 1,5</label>
+            <input class="inj" type="checkbox" id="qmd-19" value="1.9"><label for="qmd-19">100% do corpo 1,9</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ajusteMais">Aumentar kcal</label>
+          <input id="ajusteMais" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="ajusteMenos">Diminuir kcal</label>
+          <input id="ajusteMenos" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result"><span>Fator injúria total:</span><strong id="fatorTotal">1,00</strong></div>
+        <div class="result"><span>TMB × fator:</span><strong id="kcalBase">0</strong><span class="suf">kcal/dia</span>
+        </div>
+        <div class="result emph"><span>Valor final de kcal a usar:</span><strong id="kcalFinal">0</strong><span
+            class="suf">kcal/dia</span></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn prev" data-prev="1">Anterior</button>
+        <button class="btn next" data-next="3">Próximo</button>
+      </div>
+    </section>
+
+    <section class="card" id="step-3" hidden>
+      <h2>Parte 3 — Questionário</h2>
+      <div class="form-list">
+        <label class="qlabel">1 — Armazenamento da dieta</label>
+        <textarea id="q1" rows="2" placeholder="Descreva..."></textarea>
+
+        <label class="qlabel">2 — Higiene bucal</label>
+        <textarea id="q2" rows="2" placeholder="Descreva..."></textarea>
+
+        <label class="qlabel">3 — Higienização dos frascos e equipos: quantas vezes? Quais produtos usados?</label>
+        <textarea id="q3" rows="3" placeholder="Descreva..."></textarea>
+
+        <label class="qlabel">4 — Intestino: como funciona? Consistência? Cor?</label>
+        <textarea id="q4" rows="3" placeholder="Descreva..."></textarea>
+
+        <label class="qlabel">5 — Qualidade do sono?</label>
+        <textarea id="q5" rows="2" placeholder="Descreva..."></textarea>
+
+        <div class="yn">
+          <div>
+            <label>6 — Paciente está com perda de peso?</label>
+            <div class="segmented">
+              <input type="radio" id="p6-s" name="p6" value="sim">
+              <label for="p6-s">Sim</label>
+              <input type="radio" id="p6-n" name="p6" value="nao" checked>
+              <label for="p6-n">Não</label>
+            </div>
+          </div>
+          <div class="field compact">
+            <label for="p6-qtd">Se sim, quantidade (kg)</label>
+            <input id="p6-qtd" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.0" disabled>
+          </div>
+        </div>
+
+        <div class="yn">
+          <div>
+            <label>7 — Paciente está com ganho de peso?</label>
+            <div class="segmented">
+              <input type="radio" id="p7-s" name="p7" value="sim">
+              <label for="p7-s">Sim</label>
+              <input type="radio" id="p7-n" name="p7" value="nao" checked>
+              <label for="p7-n">Não</label>
+            </div>
+          </div>
+          <div class="field compact">
+            <label for="p7-qtd">Se sim, quantidade (kg)</label>
+            <input id="p7-qtd" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.0" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn prev" data-prev="2">Anterior</button>
+        <button class="btn" id="btnGerarPdf">Gerar PDF</button>
+        <button class="btn primary" id="btnRecalcular">Recalcular tudo</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Feito para estágio — Nutrição</small>
+  </footer>
+
+  <!-- Área de impressão -->
+  <div id="print-area" aria-hidden="true" hidden>
+    <div class="page folha1">
+      <img class="bg" src="Folha_1.jpeg" alt="Folha 1">
+      <span class="pos nome" id="p-nome"></span>
+      <span class="pos idade" id="p-idade"></span>
+      <span class="pos cp" id="p-cp"></span>
+      <span class="pos cb" id="p-cb"></span>
+      <span class="pos aj" id="p-aj"></span>
+      <span class="pos pcse" id="p-pcse"></span>
+
+      <span class="pos peso" id="p-peso"></span>
+      <span class="pos altura" id="p-altura"></span>
+      <span class="pos tmb" id="p-tmb"></span>
+    </div>
+
+    <div class="page folha2">
+      <img class="bg" src="folha_2.jpeg" alt="Folha 2">
+      <span class="pos tmbxfator" id="p-tmbxfator"></span>
+      <span class="pos aumentar" id="p-aumentar"></span>
+      <span class="pos diminuir" id="p-diminuir"></span>
+      <span class="pos kcalfinal" id="p-kcalfinal"></span>
+
+      <div class="pos q q1" id="p-q1"></div>
+      <div class="pos q q2" id="p-q2"></div>
+      <div class="pos q q3" id="p-q3"></div>
+      <div class="pos q q4" id="p-q4"></div>
+      <div class="pos q q5" id="p-q5"></div>
+      <div class="pos q q6" id="p-q6"></div>
+      <div class="pos q q7" id="p-q7"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

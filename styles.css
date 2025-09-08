@@ -1,0 +1,510 @@
+:root {
+  --bg: #0b0b0c;
+  --card: #111214;
+  --elev: #161719;
+  --text: #e5e7eb;
+  --muted: #a1a1aa;
+  --accent: #0a84ff;
+  --accent-2: #64d2ff;
+  --ok: #30d158;
+  --danger: #ff453a;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 80% -10%, #1a1b1e 0%, var(--bg) 50%);
+  color: var(--text);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  backdrop-filter: saturate(180%) blur(18px);
+  background: rgba(17, 18, 20, 0.7);
+  border-bottom: 1px solid #26272b;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.progress {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #2b2c30;
+  transition: background .2s;
+}
+
+.dot.active {
+  background: var(--accent);
+}
+
+.container {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--card), #0e0f11);
+  border: 1px solid #1d1e22;
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .03);
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 18px 0 8px;
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 800px) {
+
+  .grid.two,
+  .grid.four {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field.compact label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+label {
+  color: var(--muted);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  background: var(--elev);
+  color: var(--text);
+  border: 1px solid #27282d;
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, .15);
+}
+
+input[disabled] {
+  opacity: .6;
+}
+
+.segmented {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #27282d;
+}
+
+.segmented input {
+  display: none;
+}
+
+.segmented label {
+  padding: 8px 10px;
+  text-align: center;
+  background: var(--elev);
+  cursor: pointer;
+  color: var(--muted);
+  user-select: none;
+}
+
+.segmented input:checked+label {
+  background: #1d1f23;
+  color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Chips de checkbox (Parte 2) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chips label {
+  background: var(--elev);
+  color: var(--muted);
+  border: 1px solid #27282d;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chips input[type="checkbox"]:checked+label {
+  color: var(--text);
+  background: #1d1f23;
+  box-shadow: inset 0 0 0 2px var(--accent);
+  border-color: var(--accent);
+}
+
+.results {
+  margin-top: 16px;
+  background: #0f1012;
+  border: 1px solid #1d1e22;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.result {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.result .suf {
+  color: var(--muted);
+}
+
+.result.emph strong {
+  color: var(--ok);
+  font-size: 18px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  background: #24262b;
+  border: 1px solid #2b2d33;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn.primary {
+  background: linear-gradient(180deg, var(--accent), #0066cc);
+  border: 1px solid #0a84ff;
+}
+
+.btn.next {
+  background: #1d1f23;
+}
+
+.btn.prev {
+  background: #1d1f23;
+}
+
+.form-list {
+  display: grid;
+  gap: 12px;
+}
+
+.qlabel {
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.yn {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+}
+
+/* Impressão */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    height: auto;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .app-header,
+  .container,
+  .app-footer {
+    display: none !important;
+  }
+
+  #print-area {
+    display: block;
+  }
+}
+
+#print-area {
+  position: fixed;
+  inset: 0;
+  padding: 0;
+  display: none;
+}
+
+.page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  page-break-after: always;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 210mm 297mm;
+  background-color: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page .bg {
+  position: absolute;
+  inset: 0;
+  width: 210mm;
+  height: 297mm;
+  object-fit: cover;
+  z-index: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.folha1 {
+  background-image: url('Folha_1.jpeg');
+}
+
+.folha2 {
+  background-image: url('folha_2.jpeg');
+}
+
+.pos {
+  position: absolute;
+  font: 12pt/1.15 "Times New Roman", Times, serif;
+  color: #000;
+  z-index: 1;
+}
+
+/* Posições refinadas para sobrepor os campos do documento escaneado */
+.folha1 .nome {
+  top: 20mm;
+  left: 30mm;
+  width: 135mm;
+}
+
+.folha1 .idade {
+  top: 20mm;
+  left: 170mm;
+  width: 22mm;
+  text-align: center;
+}
+
+.folha1 .cp {
+  top: 52mm;
+  left: 41mm;
+  width: 22mm;
+  text-align: center;
+}
+
+.folha1 .aj {
+  top: 52mm;
+  left: 80mm;
+  width: 22mm;
+  text-align: center;
+}
+
+.folha1 .cb {
+  top: 52mm;
+  left: 119mm;
+  width: 22mm;
+  text-align: center;
+}
+
+.folha1 .pcse {
+  top: 52mm;
+  left: 158mm;
+  width: 22mm;
+  text-align: center;
+}
+
+.folha1 .peso {
+  top: 92mm;
+  left: 170mm;
+  width: 30mm;
+  text-align: right;
+}
+
+.folha1 .altura {
+  top: 132mm;
+  left: 170mm;
+  width: 30mm;
+  text-align: right;
+}
+
+.folha1 .tmb {
+  top: 196mm;
+  left: 170mm;
+  width: 30mm;
+  text-align: right;
+}
+
+.folha2 .tmbxfator {
+  top: 28mm;
+  left: 120mm;
+  width: 40mm;
+  text-align: right;
+}
+
+.folha2 .aumentar {
+  top: 60mm;
+  left: 58mm;
+  width: 40mm;
+  text-align: right;
+}
+
+.folha2 .diminuir {
+  top: 78mm;
+  left: 58mm;
+  width: 40mm;
+  text-align: right;
+}
+
+.folha2 .kcalfinal {
+  top: 96mm;
+  left: 138mm;
+  width: 60mm;
+  text-align: right;
+  font-weight: bold;
+}
+
+.q {
+  white-space: pre-wrap;
+  font-size: 13px;
+}
+
+.folha2 .q1 {
+  top: 120mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q2 {
+  top: 135mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q3 {
+  top: 152mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q4 {
+  top: 178mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q5 {
+  top: 202mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q6 {
+  top: 222mm;
+  left: 20mm;
+  width: 170mm;
+}
+
+.folha2 .q7 {
+  top: 240mm;
+  left: 20mm;
+  width: 170mm;
+}
