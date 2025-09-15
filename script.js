@@ -69,9 +69,12 @@ function atualizarParte1() {
   const pcse = numberValue('#pcse');
   const idade = numberValue('#idade');
   const joelho = numberValue('#joelho');
+  const alturaManual = numberValue('#alturaManual');
 
   const pesoEstimado = Math.max(0, calcularPesoEstimado(sexo, cp, aj, cb, pcse));
-  const alturaCm = Math.max(0, calcularAlturaEstimadacm(sexo, idade, joelho));
+  // prioridade: altura inserida manualmente > calculada pela fórmula
+  const alturaCalc = Math.max(0, calcularAlturaEstimadacm(sexo, idade, joelho));
+  const alturaCm = alturaManual > 0 ? alturaManual : alturaCalc;
 
   $('#pesoEstimado').textContent = formatNumber(pesoEstimado, 2);
   $('#alturaEstimadacm').textContent = formatNumber(alturaCm, 1);
@@ -91,6 +94,7 @@ function atualizarParte2() {
   const { tmb } = atualizarParte1(); // garante sincronização
 
   // Multiplicar todos os checkboxes marcados
+  // Agora cada categoria é rádio (apenas um possível por grupo). Multiplicamos os selecionados.
   const marcados = $$('.inj:checked');
   const fator = marcados.reduce((acc, el) => acc * (parseFloat(el.value) || 1), 1) || 1;
 
@@ -107,7 +111,7 @@ function atualizarParte2() {
 
 function wireEvents() {
   // Inputs que devem recalcular parte 1
-  const idsParte1 = ['#cp', '#aj', '#cb', '#pcse', '#idade', '#joelho', '#pesoMedido', '#sexo-m', '#sexo-f', '#peso-estimado', '#peso-balanca'];
+  const idsParte1 = ['#cp', '#aj', '#cb', '#pcse', '#idade', '#joelho', '#alturaManual', '#pesoMedido', '#sexo-m', '#sexo-f', '#peso-estimado', '#peso-balanca'];
   idsParte1.forEach(sel => {
     const el = $(sel);
     if (el) el.addEventListener('input', atualizarParte1);
@@ -183,11 +187,13 @@ function coletarDadosParaImpressao() {
   const cb = numberValue('#cb');
   const pcse = numberValue('#pcse');
   const joelho = numberValue('#joelho');
+  const alturaManual = numberValue('#alturaManual');
 
   const usarEstimado = $('#peso-estimado').checked;
   const pesoEstimado = calcularPesoEstimado(sexo, cp, aj, cb, pcse);
   const pesoParaTmb = usarEstimado ? pesoEstimado : numberValue('#pesoMedido');
-  const alturaCm = calcularAlturaEstimadacm(sexo, idade, joelho);
+  const alturaCalc = calcularAlturaEstimadacm(sexo, idade, joelho);
+  const alturaCm = alturaManual > 0 ? alturaManual : alturaCalc;
   const tmb = calcularTMB(sexo, pesoParaTmb, alturaCm, idade);
 
   const fatoresEls = $$('.inj:checked');
@@ -211,6 +217,21 @@ function coletarDadosParaImpressao() {
     alturaCm: formatNumber(alturaCm, 1),
     alturaM: formatNumber(alturaCm / 100, 2),
     tmb: Math.round(tmb).toLocaleString('pt-BR'),
+    // fórmulas de altura com substituição de valores (apenas para o sexo selecionado)
+    alt_formula_f: 'Mulheres: 84,88 + (1,83 × AJ) − (0,24 × idade)',
+    alt_formula_m: 'Homens: 64,19 − (0,04 × idade) + (2,02 × AJ)',
+    alt_valores_f: sexo === 'F' ? `84,88 + (1,83 × ${formatNumber(aj, 1)}) − (0,24 × ${Math.round(idade)}) = ${formatNumber(alturaCm, 1)} cm` : '',
+    alt_valores_m: sexo === 'M' ? `64,19 − (0,04 × ${Math.round(idade)}) + (2,02 × ${formatNumber(aj, 1)}) = ${formatNumber(alturaCm, 1)} cm` : '',
+    // fórmulas de peso e substituição de valores
+    peso_formula_f: 'Mulheres: (1,27 × CP) + (0,87 × AJ) + (0,98 × CB) + (0,4 × PCSE) − 62,35',
+    peso_formula_m: 'Homens: (0,98 × CP) + (1,16 × AJ) + (1,73 × CB) + (0,37 × PCSE) − 81,69',
+    peso_valores_f: sexo === 'F' ? `(1,27 × ${formatNumber(cp, 1)}) + (0,87 × ${formatNumber(aj, 1)}) + (0,98 × ${formatNumber(cb, 1)}) + (0,4 × ${formatNumber(pcse, 1)}) − 62,35 = ${formatNumber(pesoEstimado, 1)} kg` : '',
+    peso_valores_m: sexo === 'M' ? `(0,98 × ${formatNumber(cp, 1)}) + (1,16 × ${formatNumber(aj, 1)}) + (1,73 × ${formatNumber(cb, 1)}) + (0,37 × ${formatNumber(pcse, 1)}) − 81,69 = ${formatNumber(pesoEstimado, 1)} kg` : '',
+    // fórmulas de TMB e substituição de valores
+    tmb_formula_f: 'Mulheres: 655 + (9,6 × peso em Kg) + (1,9 × altura em cm) − (4,7 × idade)',
+    tmb_formula_m: 'Homens: 66,47 + (13,75 × peso em Kg) + (5 × altura em cm) − (6,75 × idade)',
+    tmb_valores_f: sexo === 'F' ? `655 + (9,6 × ${formatNumber(pesoParaTmb, 1)}) + (1,9 × ${formatNumber(alturaCm, 1)}) − (4,7 × ${Math.round(idade)}) = ${Math.round(tmb).toLocaleString('pt-BR')} kcal/dia` : '',
+    tmb_valores_m: sexo === 'M' ? `66,47 + (13,75 × ${formatNumber(pesoParaTmb, 1)}) + (5 × ${formatNumber(alturaCm, 1)}) − (6,75 × ${Math.round(idade)}) = ${Math.round(tmb).toLocaleString('pt-BR')} kcal/dia` : '',
     fatorTotal: formatNumber(fator, 2),
     kcalBase: Math.round(kcalBase).toLocaleString('pt-BR'),
     ajusteMais: ajusteMais ? Math.round(ajusteMais).toLocaleString('pt-BR') : '',
@@ -277,6 +298,8 @@ function construirHtmlImpressao(data) {
       /* tabelas de cálculo centralizadas, Arial e negrito */
       .calc { font-family: Arial, Helvetica, sans-serif; font-weight: bold; text-align: center; }
       .calc td, .calc th { font-weight: bold; }
+      .calc .left { text-align: left; }
+      .calc .noborder { border: none !important; }
     </style>
   </head>
   <body>
@@ -284,6 +307,7 @@ function construirHtmlImpressao(data) {
       <div class="section">
         <div class="row"><div class="label">NOME:</div><div class="line">{{nome}}</div></div>
         <div class="row small" style="margin-top:3mm;">SEXO: ( <span>{{sexoM}}</span> ) masc. ( <span>{{sexoF}}</span> ) fem. &nbsp;&nbsp; Idade: {{idade}}</div>
+        <div class="row small muted" style="margin-top:2mm;">AJ: {{aj}} &nbsp;&nbsp; CP: {{cp}} &nbsp;&nbsp; CB: {{cb}} &nbsp;&nbsp; PCSE: {{pcse}} &nbsp;&nbsp; Idade: {{idade}}</div>
       </div>
 
       <div class="section">
@@ -291,6 +315,10 @@ function construirHtmlImpressao(data) {
           <tr><th>Peso</th></tr>
           <tr><td>( ) Peso estimado  ( ) Peso na balança  &nbsp;&nbsp; SEXO: ( <span>{{sexoM}}</span> ) masc. ( <span>{{sexoF}}</span> ) fem.</td></tr>
           <tr><td class="right">VALOR: {{peso}} Kg</td></tr>
+          <tr><td class="small left noborder">{{peso_formula_f}}</td></tr>
+          <tr><td class="small left noborder">{{peso_valores_f}}</td></tr>
+          <tr><td class="small left noborder">{{peso_formula_m}}</td></tr>
+          <tr><td class="small left noborder">{{peso_valores_m}}</td></tr>
         </table>
       </div>
 
@@ -299,12 +327,20 @@ function construirHtmlImpressao(data) {
           <tr><th>ALTURA ESTIMADA</th></tr>
           <tr><td>( ) altura estimada  ( ) altura no estadiômetro  &nbsp;&nbsp; SEXO: ( <span>{{sexoM}}</span> ) masc. ( <span>{{sexoF}}</span> ) fem.</td></tr>
           <tr><td class="right">VALOR: {{alturaM}} Metros</td></tr>
+          <tr><td class="small left noborder">{{alt_formula_f}}</td></tr>
+          <tr><td class="small left noborder">{{alt_valores_f}}</td></tr>
+          <tr><td class="small left noborder">{{alt_formula_m}}</td></tr>
+          <tr><td class="small left noborder">{{alt_valores_m}}</td></tr>
         </table>
       </div>
 
       <div class="section">
         <div class="title">TMB</div>
         <div class="row"><div class="label">VALOR:</div><div class="line right">{{tmb}} kcal/dia</div></div>
+        <div class="small left" style="margin-top:2mm;">{{tmb_formula_f}}</div>
+        <div class="small left">{{tmb_valores_f}}</div>
+        <div class="small left" style="margin-top:2mm;">{{tmb_formula_m}}</div>
+        <div class="small left">{{tmb_valores_m}}</div>
       </div>
     </div>
 

@@ -32,6 +32,10 @@
           <input id="idade" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
         </div>
         <div class="field">
+          <label for="alturaManual">Altura (cm) — manual/opcional</label>
+          <input id="alturaManual" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.0">
+        </div>
+        <div class="field">
           <label>Sexo</label>
           <div class="segmented">
             <input type="radio" id="sexo-m" name="sexo" value="M" checked>
@@ -102,41 +106,45 @@
         <div class="field">
           <label>Fator de atividade (FA)</label>
           <div class="chips">
-            <input class="inj" type="checkbox" id="fa-12" value="1.2"><label for="fa-12">Acamado 1,2</label>
-            <input class="inj" type="checkbox" id="fa-125" value="1.25"><label for="fa-125">Deambulando pouco
+            <input class="inj" type="radio" name="inj" id="fa-12" value="1.2"><label for="fa-12">Acamado 1,2</label>
+            <input class="inj" type="radio" name="inj" id="fa-125" value="1.25"><label for="fa-125">Deambulando pouco
               1,25</label>
-            <input class="inj" type="checkbox" id="fa-13" value="1.3"><label for="fa-13">Deambulando 1,3</label>
+            <input class="inj" type="radio" name="inj" id="fa-13" value="1.3"><label for="fa-13">Deambulando 1,3</label>
           </div>
         </div>
         <div class="field">
           <label>Temperatura (FT)</label>
           <div class="chips">
-            <input class="inj" type="checkbox" id="ft-11" value="1.1"><label for="ft-11">38° 1,1</label>
-            <input class="inj" type="checkbox" id="ft-12" value="1.2"><label for="ft-12">39° 1,2</label>
-            <input class="inj" type="checkbox" id="ft-13" value="1.3"><label for="ft-13">40° 1,3</label>
+            <input class="inj" type="radio" name="inj" id="ft-11" value="1.1"><label for="ft-11">38° 1,1</label>
+            <input class="inj" type="radio" name="inj" id="ft-12" value="1.2"><label for="ft-12">39° 1,2</label>
+            <input class="inj" type="radio" name="inj" id="ft-13" value="1.3"><label for="ft-13">40° 1,3</label>
           </div>
         </div>
         <div class="field">
           <label>Condição/Procedimento</label>
           <div class="chips">
-            <input class="inj" type="checkbox" id="fc-125" value="1.25"><label for="fc-125">Câncer 1,25</label>
-            <input class="inj" type="checkbox" id="fc-11" value="1.1"><label for="fc-11">Cirurgia pequena 1,1</label>
-            <input class="inj" type="checkbox" id="fc-12" value="1.2"><label for="fc-12">Cirurgia grande 1,2</label>
+            <input class="inj" type="radio" name="inj" id="fc-125" value="1.25"><label for="fc-125">Câncer 1,25</label>
+            <input class="inj" type="radio" name="inj" id="fc-11" value="1.1"><label for="fc-11">Cirurgia pequena
+              1,1</label>
+            <input class="inj" type="radio" name="inj" id="fc-12" value="1.2"><label for="fc-12">Cirurgia grande
+              1,2</label>
           </div>
         </div>
         <div class="field">
           <label>Infecção</label>
           <div class="chips">
-            <input class="inj" type="checkbox" id="inf-12" value="1.2"><label for="inf-12">Leve 1,2</label>
-            <input class="inj" type="checkbox" id="inf-14" value="1.4"><label for="inf-14">Moderada 1,4</label>
-            <input class="inj" type="checkbox" id="inf-16" value="1.6"><label for="inf-16">Grande 1,6</label>
+            <input class="inj" type="radio" name="inj" id="inf-12" value="1.2"><label for="inf-12">Leve 1,2</label>
+            <input class="inj" type="radio" name="inj" id="inf-14" value="1.4"><label for="inf-14">Moderada 1,4</label>
+            <input class="inj" type="radio" name="inj" id="inf-16" value="1.6"><label for="inf-16">Grande 1,6</label>
           </div>
         </div>
         <div class="field">
           <label>Queimado</label>
           <div class="chips">
-            <input class="inj" type="checkbox" id="qmd-15" value="1.5"><label for="qmd-15">40% do corpo 1,5</label>
-            <input class="inj" type="checkbox" id="qmd-19" value="1.9"><label for="qmd-19">100% do corpo 1,9</label>
+            <input class="inj" type="radio" name="inj" id="qmd-15" value="1.5"><label for="qmd-15">40% do corpo
+              1,5</label>
+            <input class="inj" type="radio" name="inj" id="qmd-19" value="1.9"><label for="qmd-19">100% do corpo
+              1,9</label>
           </div>
         </div>
         <div class="field">
